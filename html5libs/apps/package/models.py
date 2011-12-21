@@ -4,7 +4,6 @@ import os
 import re
 import sys
 
-
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -14,6 +13,7 @@ from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
 from distutils.version import LooseVersion as versioner
+import eav
 
 from core.models import BaseModel
 from package.pypi import fetch_releases
@@ -22,6 +22,8 @@ from package.signals import signal_fetch_latest_metadata
 
 repo_url_help_text = settings.PACKAGINATOR_HELP_TEXT['REPO_URL']
 pypi_url_help_text = settings.PACKAGINATOR_HELP_TEXT['PYPI_URL']
+
+
 
 class NoPyPiVersionFound(Exception):
     pass
@@ -209,6 +211,9 @@ class Package(BaseModel):
     @models.permalink
     def get_absolute_url(self):
         return ("package", [self.slug])
+
+eav.register(Package)
+
         
 
 class PackageExample(BaseModel):
